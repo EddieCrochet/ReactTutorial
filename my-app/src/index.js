@@ -3,10 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 class Square extends React.Component {
+  constructor(props) {
+  {/*have to call super when defining the constructor of a subclass*/}
+    super(props);
+    {/*passes props to the parent constructor*/}
+    this.state = {
+      value: null,
+    };
+  }
+
     render() {
       return (
         <button className="square" onClick={() =>
 alert('click')}>
+  {/*Forgetting () => and writing onClick={alert('click')} 
+  is a common mistake, and would fire the alert every 
+  time the component re-renders.*/}
           {this.props.value}
         </button>
       );
