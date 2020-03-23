@@ -14,12 +14,16 @@ class Square extends React.Component {
 
     render() {
       return (
-        <button className="square" onClick={() =>
-alert('click')}>
+        <button className="square" 
+onClick={() => this.setState({value: 'X'})}>
+  {/* calling setState from an onClick handler in the render method 
+  tells React to re-render the component called from whenever the 
+  button is clicked --- when you call setState in a component - 
+  React auto updates the child components as well   */}
   {/*Forgetting () => and writing onClick={alert('click')} 
   is a common mistake, and would fire the alert every 
   time the component re-renders.*/}
-          {this.props.value}
+          {this.state.value}
         </button>
       );
     }
