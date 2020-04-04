@@ -51,16 +51,20 @@ onClick={() => this.props.onClick({value: 'X'})}>
       /*  Add a constructor to the Board and set the Board’s initial state 
       to contain an array of 9 nulls corresponding to the 9 squares:  */
         squares: Array(9).fill(null),
+        xIsNext: true,
       };
     }
 
     handleClick(i) {
       const squares = this.state.squares.slice();
       //creating a copy of the squares array to modify instead of modifying the existing array
-      squares[i] = 'X';
+      squares[i] = this.state.xIsNext ? 'X' : 'O';
       //state is stored in Board component instead of the individual Square
       //When the Board's state changes, the Square components re-render auto
-      this.setState({squares: squares});
+      this.setState({
+        squares: squares,
+        xIsNext: !this.state.xIsNext,
+      });
     }
 
     renderSquare(i) {
@@ -73,7 +77,8 @@ onClick={() => this.props.onClick({value: 'X'})}>
     }
   
     render() {
-      const status = 'Next player: X';
+      const status = 'Next player: ' + (this.state.xIsNext ?
+        'X' : 'O');
   
       return (
         <div>
