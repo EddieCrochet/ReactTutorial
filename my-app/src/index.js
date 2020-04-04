@@ -2,11 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+function Square(props) {
+  return (
+    <button className="square" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
+}
+
+//So... this version is way more tedious and can apparently be done above
+//in whats called a FUNCTION COMPONENT
+//
+/*
 class Square extends React.Component {
  //constructor(props) {
- // {/*have to call super when defining the constructor of a subclass*/}
+ // {have to call super when defining the constructor of a subclass}
     //super(props);
-   // {/*passes props to the parent constructor*/}
+   // {passes props to the parent constructor}
    // this.state = {
      // value: null,
    // };
@@ -20,15 +32,17 @@ onClick={() => this.props.onClick({value: 'X'})}>
   {/* calling setState from an onClick handler in the render method 
   tells React to re-render the component called from whenever the 
   button is clicked --- when you call setState in a component - 
-  React auto updates the child components as well   */}
-  {/*Forgetting () => and writing onClick={alert('click')} 
+  React auto updates the child components as well   }
+  {Forgetting () => and writing onClick={alert('click')} 
   is a common mistake, and would fire the alert every 
-  time the component re-renders.*/}
+  time the component re-renders.}
           {this.props.value}
         </button>
       );
     }
   }
+  */
+  
   
   class Board extends React.Component {
     constructor(props) {
