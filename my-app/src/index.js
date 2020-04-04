@@ -45,19 +45,27 @@ onClick={() => this.props.onClick({value: 'X'})}>
   
   
   class Board extends React.Component {
+    //delete constructor so we can pass the location of each square into the onclick
+    /*
     constructor(props) {
       super(props);
       this.state = {
-      /*  Add a constructor to the Board and set the Board’s initial state 
-      to contain an array of 9 nulls corresponding to the 9 squares:  */
+      //  Add a constructor to the Board and set the Board’s initial state 
+      //to contain an array of 9 nulls corresponding to the 9 squares:  
         squares: Array(9).fill(null),
         xIsNext: true,
       };
     }
+    */
 
     handleClick(i) {
       const squares = this.state.squares.slice();
       //creating a copy of the squares array to modify instead of modifying the existing array
+      if (calculateWinner(squares) || squares[i]) {
+        return;
+        //just return the function early by ignoring a click if
+        //someone has won the game or if a square is already filled
+      }
       squares[i] = this.state.xIsNext ? 'X' : 'O';
       //state is stored in Board component instead of the individual Square
       //When the Board's state changes, the Square components re-render auto
@@ -70,8 +78,8 @@ onClick={() => this.props.onClick({value: 'X'})}>
     renderSquare(i) {
         return (
           <Square 
-            value={this.state.squares[i]}
-            onClick={() => this.handleClick(i)} 
+            value={this.props.squares[i]}
+            onClick={() => this.props.onClick(i)} 
           />
         );
     }
@@ -109,6 +117,16 @@ onClick={() => this.props.onClick({value: 'X'})}>
   }
   
   class Game extends React.Component {
+    //must first set up the Game component's initial state via it's constructor
+    constructor(props) {
+      super(props);
+      this.state = {
+        history: [{
+          squares: Array(9).fill(null),
+        }],
+        xIsNext: true,
+      };
+    }
     render() {
       return (
         <div className="game">
