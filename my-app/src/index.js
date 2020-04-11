@@ -58,23 +58,6 @@ onClick={() => this.props.onClick({value: 'X'})}>
     }
     */
 
-    handleClick(i) {
-      const squares = this.state.squares.slice();
-      //creating a copy of the squares array to modify instead of modifying the existing array
-      if (calculateWinner(squares) || squares[i]) {
-        return;
-        //just return the function early by ignoring a click if
-        //someone has won the game or if a square is already filled
-      }
-      squares[i] = this.state.xIsNext ? 'X' : 'O';
-      //state is stored in Board component instead of the individual Square
-      //When the Board's state changes, the Square components re-render auto
-      this.setState({
-        squares: squares,
-        xIsNext: !this.state.xIsNext,
-      });
-    }
-
     renderSquare(i) {
         return (
           <Square 
@@ -85,6 +68,10 @@ onClick={() => this.props.onClick({value: 'X'})}>
     }
   
     render() {
+
+//since the GAME component is now rendering the game's status - 
+//we can now remove corresponding code from the Board's render method
+      /*
       const winner = calculateWinner(this.state.squares);
       let status;
       if (winner) {
@@ -92,10 +79,9 @@ onClick={() => this.props.onClick({value: 'X'})}>
       } else {
         status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
       }
-  
+  */
       return (
         <div>
-          <div className="status">{status}</div>
           <div className="board-row">
             {this.renderSquare(0)}
             {this.renderSquare(1)}
@@ -126,6 +112,26 @@ onClick={() => this.props.onClick({value: 'X'})}>
         }],
         xIsNext: true,
       };
+    }
+    handleClick(i) {
+      const history = this.state.history;
+      const current = history[history.length -1];
+      const squares = current.squares.slice();
+      //creating a copy of the squares array to modify instead of modifying the existing array
+      if (calculateWinner(squares) || squares[i]) {
+        return;
+        //just return the function early by ignoring a click if
+        //someone has won the game or if a square is already filled
+      }
+      squares[i] = this.state.xIsNext ? 'X' : 'O';
+      //state is stored in Board component instead of the individual Square
+      //When the Board's state changes, the Square components re-render auto
+      this.setState({
+        history: history.concat([{
+          squares: squares,
+        }]),
+        xIsNext: !this.state.xIsNext,
+      });
     }
     render() {
       const history = this.state.history;
