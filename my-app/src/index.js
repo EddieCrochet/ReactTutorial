@@ -116,9 +116,9 @@ onClick={() => this.props.onClick({value: 'X'})}>
     }
 
     handleClick(i) {
-      const history = this.state.history.slice;
+      const history = this.state.history.slice(0, this.state.stepNumber + 1);
       const current = history[history.length -1];
-      const squares = current.squares.slice(0, this.state.stepNumber + 1);
+      const squares = current.squares.slice();
       //creating a copy of the squares array to modify instead of modifying the existing array
       if (calculateWinner(squares) || squares[i]) {
         return;
