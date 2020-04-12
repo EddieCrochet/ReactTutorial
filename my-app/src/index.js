@@ -131,6 +131,7 @@ onClick={() => this.props.onClick({value: 'X'})}>
       this.setState({
         history: history.concat([{
           squares: squares,
+          latestMoveSquare: i
         }]),
         stepNumber: history.length,
         xIsNext: !this.state.xIsNext,
@@ -150,8 +151,11 @@ onClick={() => this.props.onClick({value: 'X'})}>
       const winner = calculateWinner(current.squares);
 
       const moves = history.map((step, move) => {
+        const latestMoveSquare = step.latestMoveSquare;
+        const col = 1 + latestMoveSquare % 3;
+        const row = 1 + Math.floor(latestMoveSquare / 3);
           const desc = move ?
-            'Go to move #' + move :
+            'Go to move #' + move + " at (" + col+ "," + row + ")":
             'Go to game start';
           return (
             <li key={move}>
