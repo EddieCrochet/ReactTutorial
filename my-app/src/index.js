@@ -151,6 +151,7 @@ onClick={() => this.props.onClick({value: 'X'})}>
       const winner = calculateWinner(current.squares);
 
       const moves = history.map((step, move) => {
+        console.log(move, this.state.stepNumber);
         const latestMoveSquare = step.latestMoveSquare;
         const col = 1 + latestMoveSquare % 3;
         const row = 1 + Math.floor(latestMoveSquare / 3);
@@ -159,8 +160,10 @@ onClick={() => this.props.onClick({value: 'X'})}>
             'Go to game start';
           return (
             <li key={move}>
-              <button onClick={() => this.jumpTo(move)}>
-                {desc}
+              <button 
+                className={move === this.state.stepNumber ? 'move-list-item-selected' : ''}
+                onClick={() => this.jumpTo(move)}>
+                  {desc}
               </button>
             </li>
           );
