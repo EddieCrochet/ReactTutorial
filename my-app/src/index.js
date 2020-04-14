@@ -3,8 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Square(props) {
+  const className = 'square' + (props.highlight ? 'highlight' : '');
   return (
-    <button className="square" onClick={props.onClick}>
+    <button 
+      className={className} 
+      onClick={props.onClick}>
       {props.value}
     </button>
   );
@@ -59,18 +62,22 @@ onClick={() => this.props.onClick({value: 'X'})}>
     */
 
     renderSquare(i) {
+      const winLine = this.props.winLine;
         return (
           <Square 
+            key={i}
             value={this.props.squares[i]}
-            onClick={() => this.props.onClick(i)} 
+            onClick={() => this.props.onClick(i)}
+            highlight={winLine && winLine.includes(i)} 
+            //reads as true or false value above
           />
         );
     }
   
     render() {
 
-//since the GAME component is now rendering the game's status - 
-//we can now remove corresponding code from the Board's render method
+      //since the GAME component is now rendering the game's status - 
+      //we can now remove corresponding code from the Board's render method
       /*
       const winner = calculateWinner(this.state.squares);
       let status;
@@ -134,7 +141,7 @@ onClick={() => this.props.onClick({value: 'X'})}>
       const current = history[history.length -1];
       const squares = current.squares.slice();
       //creating a copy of the squares array to modify instead of modifying the existing array
-      if (calculateWinner(squares) || squares[i]) {
+      if (calculateWinner(squares).winner || squares[i]) {
         return;
         //just return the function early by ignoring a click if
         //someone has won the game or if a square is already filled
@@ -168,11 +175,11 @@ onClick={() => this.props.onClick({value: 'X'})}>
     render() {
       const history = this.state.history;
       const current = history[this.state.stepNumber];
-      const winner = calculateWinner(current.squares);
+      const winInfo = calculateWinner(current.squares);
       const isAscending = this.state.isAscending;
+      const winner = winInfo.winner;
 
       const moves = history.map((step, move) => {
-        console.log(move, this.state.stepNumber);
         const latestMoveSquare = step.latestMoveSquare;
         const col = 1 + latestMoveSquare % 3;
         const row = 1 + Math.floor(latestMoveSquare / 3);
@@ -207,6 +214,7 @@ onClick={() => this.props.onClick({value: 'X'})}>
             <Board 
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}  
+            winLine={winInfo.line}
           />
           </div>
           <div className="game-info">
@@ -243,8 +251,13 @@ onClick={() => this.props.onClick({value: 'X'})}>
       const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] &&
       squares[a] === squares[c]) {
-        return squares[a];
+        return {
+          winner: squares[a],
+          line: lines[i]
+        };
       }
     }
-    return null;
+    return {
+      winner: null,
+    };
   }
