@@ -79,9 +79,21 @@ onClick={() => this.props.onClick({value: 'X'})}>
       } else {
         status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
       }
-  */
+      */
+      const boardSize = 3;
+      let squares = [];
+      for(let i=0; i<boardSize; i++){
+        let row = [];
+        for(let j=0; j<boardSize; j++){
+          row.push(this.renderSquare(i * boardSize + j));
+        }
+        squares.push(<div key={i} className="board-row">{row}</div>)
+      }
       return (
-        <div>
+        <div>{squares}</div>
+       /*
+       below is hardcoding, above is same logic with 2 loops 
+       <div>
           <div className="board-row">
             {this.renderSquare(0)}
             {this.renderSquare(1)}
@@ -98,6 +110,7 @@ onClick={() => this.props.onClick({value: 'X'})}>
             {this.renderSquare(8)}
           </div>
         </div>
+        */
       );
     }
   }
