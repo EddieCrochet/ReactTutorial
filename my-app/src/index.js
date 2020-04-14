@@ -125,6 +125,7 @@ onClick={() => this.props.onClick({value: 'X'})}>
         }],
         stepNumber: 0,
         xIsNext: true,
+        isAscending: true,
       };
     }
 
@@ -158,10 +159,17 @@ onClick={() => this.props.onClick({value: 'X'})}>
       });
     }
 
+    handleSortToggle() {
+      this.setState({
+        isAscending: !this.state.isAscending
+      });
+    }
+
     render() {
       const history = this.state.history;
       const current = history[this.state.stepNumber];
       const winner = calculateWinner(current.squares);
+      const isAscending = this.state.isAscending;
 
       const moves = history.map((step, move) => {
         console.log(move, this.state.stepNumber);
@@ -182,12 +190,17 @@ onClick={() => this.props.onClick({value: 'X'})}>
           );
       });
 
+      if(!isAscending) {
+        moves.reverse();
+      }
+
       let status;
       if (winner) {
         status = 'Winner: ' + winner;
       } else {
         status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
       }
+
       return (
         <div className="game">
           <div className="game-board">
@@ -198,6 +211,9 @@ onClick={() => this.props.onClick({value: 'X'})}>
           </div>
           <div className="game-info">
             <div>{ status }</div>
+            <button onClick={() => this.handleSortToggle()}>
+              {isAscending ? 'ascending' : 'descending'}
+            </button>
             <ol>{moves}</ol>
           </div>
         </div>
