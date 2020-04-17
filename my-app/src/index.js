@@ -247,6 +247,9 @@ onClick={() => this.props.onClick({value: 'X'})}>
       [0,4,8],
       [2,4,6],
     ];
+    var areAllNotNull = squares.every(function(i) {
+      return i !== null
+    })
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] &&
@@ -255,6 +258,10 @@ onClick={() => this.props.onClick({value: 'X'})}>
           winner: squares[a],
           line: lines[i]
         };
+      } else if (areAllNotNull) {
+        return {
+          winner: "Well if aint nobody win this here round, I don't know which way is up no more"
+        }
       }
     }
     return {
